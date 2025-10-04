@@ -1,8 +1,90 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio - Portal Académico";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row align-items-center mb-5">
+    <div class="col-md-6">
+        <h1 class="display-4 fw-bold text-primary">Bienvenido al Portal Académico</h1>
+        <p class="lead">Gestiona tus cursos y matrículas de manera sencilla y eficiente.</p>
+        
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <div class="mt-4">
+                <a class="btn btn-primary btn-lg me-3" asp-controller="Cursos" asp-action="Catalogo">
+                    <i class="bi bi-search"></i> Explorar Cursos
+                </a>
+                @if (User.IsInRole("Coordinador"))
+                {
+                    <a class="btn btn-outline-primary btn-lg" asp-controller="Coordinador" asp-action="Index">
+                        <i class="bi bi-speedometer2"></i> Panel Coordinador
+                    </a>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="mt-4">
+                <a class="btn btn-primary btn-lg me-3" asp-area="Identity" asp-page="/Account/Register">
+                    <i class="bi bi-person-plus"></i> Registrarse
+                </a>
+                <a class="btn btn-outline-primary btn-lg" asp-area="Identity" asp-page="/Account/Login">
+                    <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
+                </a>
+            </div>
+        }
+    </div>
+    <div class="col-md-6">
+        <div class="text-center">
+            <i class="bi bi-mortarboard" style="font-size: 8rem; color: var(--primary-color);"></i>
+        </div>
+    </div>
 </div>
+
+@if (User.Identity != null && User.Identity.IsAuthenticated)
+{
+    <div class="row mt-5">
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-book text-primary" style="font-size: 3rem;"></i>
+                    <h5 class="card-title mt-3">Catálogo de Cursos</h5>
+                    <p class="card-text">Explora todos los cursos disponibles y encuentra los que se adapten a tus necesidades.</p>
+                    <a asp-controller="Cursos" asp-action="Catalogo" class="btn btn-outline-primary">Ver Catálogo</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-calendar-check text-success" style="font-size: 3rem;"></i>
+                    <h5 class="card-title mt-3">Mis Matrículas</h5>
+                    <p class="card-text">Gestiona tus matrículas actuales y revisa tu historial académico.</p>
+                    <a asp-controller="Matriculas" asp-action="Index" class="btn btn-outline-success">Ver Matrículas</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-clock-history text-info" style="font-size: 3rem;"></i>
+                    <h5 class="card-title mt-3">Horarios</h5>
+                    <p class="card-text">Organiza tu tiempo revisando los horarios de tus cursos matriculados.</p>
+                    <a href="#" class="btn btn-outline-info">Ver Horarios</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <h4><i class="bi bi-info-circle"></i> ¿Eres nuevo en el portal?</h4>
+                <p class="mb-0">Regístrate para acceder al catálogo de cursos y realizar tus matrículas. Si ya tienes una cuenta, inicia sesión para continuar.</p>
+            </div>
+        </div>
+    </div>
+}
